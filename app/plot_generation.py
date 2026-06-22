@@ -95,7 +95,7 @@ def plot_numeric_distributions(df: pd.DataFrame) -> None:
     fig.suptitle(
         "Distribution of Key Numeric Features",
         fontsize=14, fontweight="bold",
-        color=STYLE["text_dark"], y=1.01,
+        color=STYLE["text_dark"]
     )
 
     for ax, col, color in zip(axes.flatten(), NUMERIC_COLS, HIST_COLORS):
@@ -117,7 +117,6 @@ def plot_numeric_distributions(df: pd.DataFrame) -> None:
         _style_ax(ax, title=col.replace("_", " ").title(), xlabel="Value", ylabel="Count")
         ax.spines["top"].set_visible(False)
         ax.spines["right"].set_visible(False)
-
     fig.tight_layout(pad=2.0)
     plt.show()
 
