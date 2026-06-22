@@ -1,0 +1,7 @@
+"""
+klasyfikator (pipeline) (2+ eksperymenty)
+normalizacja danych
+reprezentacja danych
+obróbka statystyczna
+dokumentacja
+"""
