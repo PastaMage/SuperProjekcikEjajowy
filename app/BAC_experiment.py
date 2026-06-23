@@ -1,4 +1,5 @@
 import pandas as pd
+import numpy as np
 from sklearn.metrics import (
     balanced_accuracy_score,
     classification_report,
@@ -49,31 +50,22 @@ EXPERIMENTS = [
 ]
 
 
-def run_single(name: str, X: pd.DataFrame, y: pd.Series, params: dict) -> dict:
-    print(f"Eksperyment BAC: {name}")
-    print(f"Parametry:   {params if params else 'domyślne'}")
+def run_single(name: str, X: pd.DataFrame, y: pd.Series, params: dict, results) -> dict:
+    fbeta_scores, bac_scores = cross_validation_loop(X, y, **params)
 
-    y_pred, y_true = cross_validation_loop(X, y, **params)
-
-    bac = balanced_accuracy_score(y_true, y_pred)
-
-    print(f"\nBAC (Balanced Accuracy): {bac:.4f}")
-    print("\nRaport klasyfikacji:")
-    print(classification_report(y_true, y_pred, digits=4))
-    print("Macierz pomyłek:")
-    print(confusion_matrix(y_true, y_pred))
-    print()
-
-    return {"name": name, "bac": bac, "params": params}
+    results[name] = {"fold_scores": bac_scores, "mean_bac": np.mean(bac_scores)}
+    return results
 
 
 def run_bac_experiment(X: pd.DataFrame, y: pd.Series) -> None:
-    results = []
+    results = {}
     for exp in EXPERIMENTS:
-        result = run_single(exp["name"], X, y, exp["params"])
-        results.append(result)
-    print("PODSUMOWANIE BAC dla wszystkich konfiguracji")
-    for r in results:
-        print(f"{r['name']:<35} BAC = {r['bac']:.4f}")
-
+        results = run_single(exp["name"], X, y, exp["params"], results)
+    check_results(results)
+    
     return results
+
+def check_results(results):
+    print("PODSUMOWANIE BAC dla wszystkich konfiguracji")
+    for key, value in results.items():
+        print(f"    {key}: {value["mean_bac"]:.3f}")

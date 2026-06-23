@@ -1,4 +1,4 @@
-from cross_validation import cross_validation_loop_fbeta
+from cross_validation import cross_validation_loop
 import numpy as np
 
 SMOTE_OPTIONS = {
@@ -30,14 +30,14 @@ def run_basics(X, y):
             if smote_option:
                 for sample_option in SMOTE_OPTIONS["sample_strategy"]:
                     for k_neighbors_option in SMOTE_OPTIONS["k_neighbors"]:
-                        fold_scores = cross_validation_loop_fbeta(X, y, smote=smote_option,  smote_sampling_strategy=sample_option, smote_k_neighbors=k_neighbors_option)
+                        fbeta_scores, bac_scores = cross_validation_loop(X, y, smote=smote_option,  smote_sampling_strategy=sample_option, smote_k_neighbors=k_neighbors_option)
                         key = f"weight_None_smote_{smote_option}_sampling_{sample_option}_k_neighbors_{k_neighbors_option}"
-                        basic_results[key] = {"fold_scores": fold_scores, "mean_fbeta": np.mean(fold_scores)}
+                        basic_results[key] = {"fold_scores": fbeta_scores, "mean_fbeta": np.mean(fbeta_scores)}
             else:
                 for weight_option in WEIGHT_OPTIONS:
-                    fold_scores = cross_validation_loop_fbeta(X, y, smote=smote_option, class_weight=weight_option)
+                    fbeta_scores, bac_scores = cross_validation_loop(X, y, smote=smote_option, class_weight=weight_option)
                     key = f"weight_{weight_option}_smote_{smote_option}"
-                    basic_results[key] = {"fold_scores": fold_scores, "mean_fbeta": np.mean(fold_scores)}
+                    basic_results[key] = {"fold_scores": fbeta_scores, "mean_fbeta": np.mean(fbeta_scores)}
     return basic_results
 
 def run_weight_advanced(X, y):
@@ -55,9 +55,3 @@ def check_results(results):
         print("Basic results - checking influence of smote and weight with other parameters being default")
         for key, value in basic_results.items():
             print(f"    {key}: {value["mean_fbeta"]:.3f}")
-
-    # for all_y_true, all_y_pred in results[0]:
-    #     print("\n=== RAPORT Z REPEATED STRATIFIED K-FOLD + SMOTE ===")
-    #     print(fbeta_score(all_y_true, all_y_pred, beta=1))
-    #     # print(fbeta_score(all_y_true, all_y_pred, beta=2))
-    #     # print(fbeta_score(all_y_true, all_y_pred, beta=0.5))
