@@ -1,8 +1,8 @@
 from pathlib import Path
 import pandas as pd
 from data_prep import prep_data_pipeline
-from cross_validation import cross_validation_loop
-
+from fbeta_experiment import run_experiment_fbeta
+from statistic_analysis import analyze_wilcoxon
 
 DATA_PATH = Path("./Teen_Mental_Health_Dataset.csv")
 
@@ -15,8 +15,8 @@ def load_data(path: Path) -> pd.DataFrame:
 def main() -> None:
     df = load_data(DATA_PATH)
     X, y = prep_data_pipeline(df)
-    all_y_pred, all_y_true = cross_validation_loop(X, y)
-
+    f_beta_results = run_experiment_fbeta(X, y)
+    analyze_wilcoxon(f_beta_results["basic_results"])
 
 if __name__ == "__main__":
     main()  
