@@ -15,7 +15,7 @@ def load_data(path: Path) -> pd.DataFrame:
 def main() -> None:
     df = load_data(DATA_PATH)
     X, y = prep_data_pipeline(df)
-    cross_validation_loop(X, y)
+    all_y_pred, all_y_true = cross_validation_loop(X, y)
 
 
 if __name__ == "__main__":
