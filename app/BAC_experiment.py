@@ -73,7 +73,7 @@ def run_bac_experiment(X: pd.DataFrame, y: pd.Series) -> None:
         result = run_single(exp["name"], X, y, exp["params"])
         results.append(result)
     print("PODSUMOWANIE BAC dla wszystkich konfiguracji")
-    for idx, r in enumerate(results, start=1):
-        print(f"  {idx}. {r['name']:<35} BAC = {r['bac']:.4f}")
+    for r in results:
+        print(f"{r['name']:<35} BAC = {r['bac']:.4f}")
 
     return results
