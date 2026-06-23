@@ -1,7 +1,7 @@
 from pathlib import Path
 import pandas as pd
 from data_prep import prep_data_pipeline
-from bac_experiment import run_bac_experiment
+from BAC_experiment import run_bac_experiment
 from fbeta_experiment import run_experiment_fbeta
 from statistic_analysis import analyze_wilcoxon_fbeta, analyze_wilcoxon_bac
 
