@@ -1,9 +1,10 @@
 from pathlib import Path
 import pandas as pd
 from data_prep import prep_data_pipeline
-from bac_experiment import run_bac_experiment
+from BAC_experiment import run_bac_experiment
 from fbeta_experiment import run_experiment_fbeta
 from statistic_analysis import analyze_wilcoxon_fbeta, analyze_wilcoxon_bac
+from plot_generation import plot_depression_balance, plot_numeric_distributions, plot_platform_usage
 
 DATA_PATH = Path("./Teen_Mental_Health_Dataset.csv")
 
@@ -15,6 +16,9 @@ def load_data(path: Path) -> pd.DataFrame:
 
 def main() -> None:
     df = load_data(DATA_PATH)
+    plot_depression_balance(df)
+    plot_numeric_distributions(df)
+    plot_platform_usage(df)
     X, y = prep_data_pipeline(df)
     f_beta_results = run_experiment_fbeta(X, y)
     analyze_wilcoxon_fbeta(f_beta_results["basic_results"])

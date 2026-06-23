@@ -55,10 +55,10 @@ EXPERIMENTS = [
         },
     },
     {
-        "name": "8. SMOTE + threshold 0.05",
+        "name": "8. SMOTE + threshold 0.09",
         "params": { 
             "smote": True,
-            "custom_threshold": 0.05,
+            "custom_threshold": 0.09,
         },
     },
 ]
